@@ -13,17 +13,27 @@ const refs = {
   stopBtn: document.querySelector("button[data-action=stop]"),
 };
 
+let timerId = null;
+let isActive = false;
+
 refs.startBtn.addEventListener("click", onStartBtnClick);
 refs.stopBtn.addEventListener("click", onStopBtnClick);
 
 function onStartBtnClick() {
-  setColor(colors);
+  if (isActive) {
+    return;
+  }
+
+  timerId = setInterval(setRandomColor, 1000, colors);
+  isActive = true;
 }
 
 function onStopBtnClick() {
-  refs.body.style.backgroundColor = "black";
+  clearInterval(timerId);
+  isActive = false;
+}
 
-function setColor(colors) {
+function setRandomColor(colors) {
   refs.body.style.backgroundColor =
     colors[randomIntegerFromInterval(0, colors.length)];
 }
